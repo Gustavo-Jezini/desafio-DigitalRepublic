@@ -16,6 +16,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      conta: {
+        type: Sequelize.STRING
+      },
       saldo: {
         type: Sequelize.STRING
       },

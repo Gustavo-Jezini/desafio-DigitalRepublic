@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       cpf: DataTypes.STRING,
       saldo: DataTypes.DOUBLE,
       atualizado: DataTypes.DATE,
+      conta: DataTypes.STRING,
     },
     {
       timestamps: false,
