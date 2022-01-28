@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "jezTrybe",
+    "password": "jezTrybe",
+    "database": "bank",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "jezTrybe",
+    "password": "jezTrybe",
+    "database": "bank",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "jezTrybe",
+    "password": "jezTrybe",
+    "database": "bank",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
