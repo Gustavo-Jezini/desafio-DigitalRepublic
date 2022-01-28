@@ -1,24 +1,16 @@
 'use strict';
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
-  },
+  up: async (queryInterface, Sequelize) => queryInterface.bulkInsert('Transações',
+    [
+      {
+        id_emissor: 1,
+        id_destinatario: 2,
+        data: Sequelize.literal('CURRENT_TIMESTAMP'),
+        valor: 100.00,
+        // usamos a função CURRENT_TIMESTAMP do SQL para salvar a data e hora atual nos campos `createdAt` e `updatedAt`
+      },
+    ], {}),
 
-  async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-  }
+  down: async (queryInterface) => queryInterface.bulkDelete('Transações', null, {}),
 };
