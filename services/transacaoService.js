@@ -13,8 +13,8 @@ const encontrarUsuarios = async (cpfDoEmissor, cpfDoDestinatario) => {
 
 const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
   const { id_emissor, id_destinatario } = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
-  const teste = await attContaDestinatário(valor, cpfDoDestinatario);
-  const teste2 = await attContaEmissor(valor, cpfDoEmissor);
+  await attContaDestinatário(valor, cpfDoDestinatario);
+  await attContaEmissor(valor, cpfDoEmissor);
   const data = new Date();
 
   const registrarTransacao = await Transacao.create({
@@ -28,18 +28,19 @@ const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
 };
 
 const attContaDestinatário = async (valor, cpfDoDestinatario) => {
-  await Usuario.increment({saldo: valor}, { where: { cpf: cpfDoDestinatario }})
+  await Usuario.increment(
+    {
+      saldo: valor
+    },
+    { where: { cpf: cpfDoDestinatario }})
 };
 
 const attContaEmissor = async (valor, cpfDoEmissor) => {
-  const saldoAntes = await Usuario.findOne({ cpfDoEmissor });
-  console.log(saldoAntes.dataValues);
-  const decrementValue = (0 - valor)
-  console.log(decrementValue);
-  await Usuario.decrement('saldo',{ by: decrementValue, where: { cpf: cpfDoEmissor }})
-
-  const saldoDepois = await Usuario.findOne({ cpfDoEmissor });
-  console.log(saldoDepois.dataValues);
+  await Usuario.decrement(
+    {
+      saldo: valor
+    },
+    {where: { cpf: cpfDoEmissor } })
 };
 
 module.exports = {
