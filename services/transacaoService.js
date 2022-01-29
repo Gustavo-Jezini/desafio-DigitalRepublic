@@ -1,0 +1,1 @@
+const { Transacao } = require('../models');
