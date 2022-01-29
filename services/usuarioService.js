@@ -30,6 +30,26 @@ const findOrCreate = async (nome, cpf) => {
   return {usuario, token};
 };
 
+const login = async (cpf) => {
+  const usuario = await Usuario.findOne({
+    where: { cpf },
+  })
+
+  if (!usuario) {
+    return null;
+  }
+
+  const token = jwt.sign(
+    { payload: {
+      cpf,
+    } },
+    JWT_SECRET,
+  );
+
+  return token;
+};
+
 module.exports = {
   findOrCreate,
+  login,
 }
