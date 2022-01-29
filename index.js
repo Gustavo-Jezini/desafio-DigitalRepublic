@@ -18,6 +18,6 @@ app.get('/', (req, res) => {
 
 app.use('/', verifyToken ,isValidInfo, usuarioRotas)
 
-app.use('/', transacoesRotas)
+app.use('/', verifyToken, transacoesRotas)
 
 app.listen(PORT, () => console.log(`Ouvindo na porta ${PORT}`));
