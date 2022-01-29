@@ -22,13 +22,22 @@ const checkCPF = (cpf) => {
   return true;
 };
 
+const validation = (cpf, nome) => {
+  if (!cpf || cpf === '') return { mensagem: 'É necessario informar um CPF'};
+  if (!nome || nome === '') return { mensagem: 'É necessario informar um nome'};
+   return true;
+ };
+ 
+
 
 const isValidInfo = (req, res, next) => {
-  const { cpf } = req.body;
+  const { cpf, nome } = req.body;
   const isValidCpf = checkCPF(cpf)
-
-  if (isValidCpf === null) return res.status(500).json({ erro: 'Envie somente os números de um CPF válido!!!' });
-  if (isValidCpf === false) return res.status(500).json({ erro: 'CPF inválido' });
+  const isValid = validation(cpf, nome);
+ 
+  if (isValid.mensagem) return res.status(401).json({erro: isValid.mensagem});
+  if (isValidCpf === null) return res.status(401).json({ erro: 'Envie somente os números de um CPF válido!!!' });
+  if (isValidCpf === false) return res.status(401).json({ erro: 'CPF inválido' });
 
   next();
 }

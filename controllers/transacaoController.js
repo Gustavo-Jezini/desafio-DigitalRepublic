@@ -14,4 +14,10 @@ router.post('/transacoes', async (req, res) => {
   res.status(200).json(transacao)
 });
 
+// router.get('/transacoes', async (req, res) => {
+//   const todasTransacoes = await Service.todasTransacoes();
+
+//   return res.status(200).json({ transacoes: todasTransacoes });
+// })
+
 module.exports = router;

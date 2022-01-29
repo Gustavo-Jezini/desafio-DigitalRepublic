@@ -11,22 +11,6 @@ const encontrarUsuarios = async (cpfDoEmissor, cpfDoDestinatario) => {
   }
 };
 
-const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
-  const { id_emissor, id_destinatario } = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
-  await attContaDestinatário(valor, cpfDoDestinatario);
-  await attContaEmissor(valor, cpfDoEmissor);
-  const data = new Date();
-
-  const registrarTransacao = await Transacao.create({
-    id_emissor,
-    id_destinatario,
-    valor,
-    data,
-  });
-
-  return registrarTransacao;
-};
-
 const attContaDestinatário = async (valor, cpfDoDestinatario) => {
   await Usuario.increment(
     {
@@ -43,6 +27,29 @@ const attContaEmissor = async (valor, cpfDoEmissor) => {
     {where: { cpf: cpfDoEmissor } })
 };
 
+const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
+  const { id_emissor, id_destinatario } = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
+  await attContaDestinatário(valor, cpfDoDestinatario);
+  await attContaEmissor(valor, cpfDoEmissor);
+  const data = new Date();
+
+  const registrarTransacao = await Transacao.create({
+    id_emissor,
+    id_destinatario,
+    valor,
+    data,
+  });
+
+  return registrarTransacao;
+};
+
+// const todasTransacoes = async () => {
+//   const transacoes = await Transacao.findAll();
+
+//   return transacoes;
+// }
+
 module.exports = {
   realizarTransaçao,
+  // todasTransacoes,
 }
