@@ -4,6 +4,8 @@ const encontrarUsuarios = async (cpfDoEmissor, cpfDoDestinatario) => {
 
   const emissor = await Usuario.findOne({ where: { cpf: cpfDoEmissor } });
   const destinatario = await Usuario.findOne({ where: { cpf: cpfDoDestinatario } });
+
+  if (!destinatario) return ({ mensagem: "CPF do destinátario incorreto, ou não possui conta no banco" });
   
   return {
     id_emissor: emissor.id,
@@ -11,10 +13,39 @@ const encontrarUsuarios = async (cpfDoEmissor, cpfDoDestinatario) => {
   }
 };
 
+const attContaDestinatário = async (valor, cpfDoDestinatario) => {
+  await Usuario.increment(
+    {
+      saldo: valor
+    },
+    { where: { cpf: cpfDoDestinatario }})
+};
+
+const attContaEmissor = async (valor, cpfDoEmissor) => {
+  const { saldo } = await Usuario.findOne({ where: { cpf: cpfDoEmissor }} );
+  if ((saldo - valor) < 0) return null;
+
+  await Usuario.decrement(
+    {
+      saldo: valor
+    },
+    {where: { cpf: cpfDoEmissor } })
+
+    return true;
+};
+
 const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
-  const { id_emissor, id_destinatario } = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
-  const teste = await attContaDestinatário(valor, cpfDoDestinatario);
-  const teste2 = await attContaEmissor(valor, cpfDoEmissor);
+  const response = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
+
+  if (response.mensagem) return ({ mensagem: response.mensagem });
+
+  const { id_emissor, id_destinatario } = response;
+
+  const possivelRealizar = await attContaEmissor(valor, cpfDoEmissor);
+
+  if (!possivelRealizar) return ({ mensagem: 'Emissor não tem dinheiro suficiente para essa transação' });
+
+  await attContaDestinatário(valor, cpfDoDestinatario);
   const data = new Date();
 
   const registrarTransacao = await Transacao.create({
@@ -27,21 +58,13 @@ const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
   return registrarTransacao;
 };
 
-const attContaDestinatário = async (valor, cpfDoDestinatario) => {
-  await Usuario.increment({saldo: valor}, { where: { cpf: cpfDoDestinatario }})
-};
+// const todasTransacoes = async () => {
+//   const transacoes = await Transacao.findAll();
 
-const attContaEmissor = async (valor, cpfDoEmissor) => {
-  const saldoAntes = await Usuario.findOne({ cpfDoEmissor });
-  console.log(saldoAntes.dataValues);
-  const decrementValue = (0 - valor)
-  console.log(decrementValue);
-  await Usuario.decrement('saldo',{ by: decrementValue, where: { cpf: cpfDoEmissor }})
-
-  const saldoDepois = await Usuario.findOne({ cpfDoEmissor });
-  console.log(saldoDepois.dataValues);
-};
+//   return transacoes;
+// }
 
 module.exports = {
   realizarTransaçao,
+  // todasTransacoes,
 }

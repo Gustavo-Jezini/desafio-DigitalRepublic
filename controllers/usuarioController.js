@@ -4,14 +4,19 @@ const Service = require('../services/usuarioService');
 router.post('/usuario', async (req, res) => {
   const {nome, cpf} = req.body;
   const novoUsuario = await Service.findOrCreate(nome, cpf);
-  res.status(200).json(novoUsuario);
+
+  if (!novoUsuario) return res.status(401).json({ mensagem: 'CPF já cadastrado' });
+
+  res.status(200).json({novoUsuario});
 });
 
-router.get('/login', async (req, res) => {
+router.get('/usuario', async (req, res) => {
   const { cpf } = req.body;
   const usuario = await Service.login(cpf);
 
-  res.status(200).json({token: usuario});
+  if (!usuario) return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+
+  res.status(200).json({token: usuario})
 })
 
-module.exports = router;
+module.exports = router

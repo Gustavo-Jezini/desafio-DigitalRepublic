@@ -10,11 +10,12 @@ const findOrCreate = async (nome, cpf) => {
     defaults: {
       nome, 
       cpf, 
-      saldo: 1000.94, 
+      saldo: 6000, 
       conta: 'usuario',
       atualizado: date,
     },
   });
+
   // retorna null caso ja exista um usuario com esse cpf
   if (!created) {
     return null;
