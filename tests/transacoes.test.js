@@ -194,7 +194,7 @@ describe('Realizar transação', () => {
 
   })
 
-  it.only('Se o emissor não tiver dinheiro suficiente na conta, surge um erro e a transação não é realizada', async () => {
+  it('Se o emissor não tiver dinheiro suficiente na conta, surge um erro e a transação não é realizada', async () => {
     let token;
     
     const getToken = await chai.request(app)
@@ -218,6 +218,5 @@ describe('Realizar transação', () => {
 
       expect(response.status).to.be.equals(401);
       expect(response.body.mensagem).to.be.equals('Emissor não tem dinheiro suficiente para essa transação');
-
-  })
+  });
 })
