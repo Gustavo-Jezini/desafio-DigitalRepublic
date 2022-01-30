@@ -7,7 +7,6 @@ const transacoesRotas = require('./controllers/transacaoController');
 const { isValidInfo, isValidLogin } = require('./middlewares/usuarioMiddlewares');
 const verifyToken = require('./authorization/verifyToken');
 const { isValidBody } = require('./middlewares/transaçoesMIddleware');
-const { todasTransacoes } = require('./services/transacaoService');
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));

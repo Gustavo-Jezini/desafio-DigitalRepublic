@@ -10,6 +10,8 @@ router.post('/transacoes', async (req, res) => {
   const cpfDoDestinatario = req.body.cpf;
   const { valor } = req.body;
   const transacao = await Service.realizarTransaçao(cpfDoEmissor, cpfDoDestinatario, valor);
+  console.log(transacao);
+  if (transacao.mensagem) return res.status(401).json(transacao)
 
   res.status(200).json(transacao)
 });

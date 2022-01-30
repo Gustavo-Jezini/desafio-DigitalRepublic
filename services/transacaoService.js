@@ -22,11 +22,16 @@ const attContaDestinatário = async (valor, cpfDoDestinatario) => {
 };
 
 const attContaEmissor = async (valor, cpfDoEmissor) => {
+  const { saldo } = await Usuario.findOne({ where: { cpf: cpfDoEmissor }} );
+  if ((saldo - valor) < 0) return null;
+
   await Usuario.decrement(
     {
       saldo: valor
     },
     {where: { cpf: cpfDoEmissor } })
+
+    return true;
 };
 
 const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
@@ -36,8 +41,11 @@ const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
 
   const { id_emissor, id_destinatario } = response;
 
+  const possivelRealizar = await attContaEmissor(valor, cpfDoEmissor);
+
+  if (!possivelRealizar) return ({ mensagem: 'Emissor não tem dinheiro suficiente para essa transação' });
+
   await attContaDestinatário(valor, cpfDoDestinatario);
-  await attContaEmissor(valor, cpfDoEmissor);
   const data = new Date();
 
   const registrarTransacao = await Transacao.create({

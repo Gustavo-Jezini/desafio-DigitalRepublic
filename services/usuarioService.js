@@ -10,7 +10,7 @@ const findOrCreate = async (nome, cpf) => {
     defaults: {
       nome, 
       cpf, 
-      saldo: 1000.94, 
+      saldo: 6000, 
       conta: 'usuario',
       atualizado: date,
     },
