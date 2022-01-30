@@ -4,6 +4,8 @@ const encontrarUsuarios = async (cpfDoEmissor, cpfDoDestinatario) => {
 
   const emissor = await Usuario.findOne({ where: { cpf: cpfDoEmissor } });
   const destinatario = await Usuario.findOne({ where: { cpf: cpfDoDestinatario } });
+
+  if (!destinatario) return ({ mensagem: "CPF do destinátario incorreto, ou não possui conta no banco" });
   
   return {
     id_emissor: emissor.id,
@@ -28,7 +30,12 @@ const attContaEmissor = async (valor, cpfDoEmissor) => {
 };
 
 const realizarTransaçao = async (cpfDoEmissor, cpfDoDestinatario, valor) => {
-  const { id_emissor, id_destinatario } = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
+  const response = await encontrarUsuarios(cpfDoEmissor, cpfDoDestinatario);
+
+  if (response.mensagem) return ({ mensagem: response.mensagem });
+
+  const { id_emissor, id_destinatario } = response;
+
   await attContaDestinatário(valor, cpfDoDestinatario);
   await attContaEmissor(valor, cpfDoEmissor);
   const data = new Date();

@@ -15,6 +15,7 @@ const findOrCreate = async (nome, cpf) => {
       atualizado: date,
     },
   });
+
   // retorna null caso ja exista um usuario com esse cpf
   if (!created) {
     return null;

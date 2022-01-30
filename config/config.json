@@ -11,7 +11,8 @@
     "password": "jezTrybe",
     "database": "bank",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "storage": "./__tests__/database.sqlite",
+    "dialect": "sqlite"
   },
   "production": {
     "username": "jezTrybe",
