@@ -1,9 +1,9 @@
 # desafio-DigitalRepublic
 Etapa do processo seletivo - desafio de Back-End
 
-Desenvolvido por: Gustavo Jezini Matos.
+## Desenvolvido por: Gustavo Jezini Matos.
 
-Configurações basicas:
+**Configurações basicas:**
   - npm install
   - npx sequelize db:create
   - npx sequelize db:migrate
@@ -11,7 +11,7 @@ Configurações basicas:
 
   OBS: É preciso povoar o banco de dados com seed para que os testes funcionem.
 
-Como funciona: 
+**Como funciona:** 
   - É possível criar um usuario do banco. Após a criação é gerado um token de autenticação.
   - É possível logar um usuario já criado no banco. Após a criação é gerado um token de autenticação.
   - Os tokens de autenticações são necessários para realizar as transações.
